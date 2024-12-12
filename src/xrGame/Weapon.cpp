@@ -2911,7 +2911,8 @@ float CWeapon::Weight() const
 
 bool CWeapon::show_crosshair()
 {
-	return !IsPending() && (!IsZoomed() || !ZoomHideCrosshair());
+	//return !IsPending() && (!IsZoomed() || !ZoomHideCrosshair());
+	return (!IsZoomed() || !ZoomHideCrosshair());
 }
 
 bool CWeapon::show_indicators()

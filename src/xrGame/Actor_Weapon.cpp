@@ -61,7 +61,7 @@ float CActor::GetWeaponAccuracy() const
 	if (g_State(state))
 	{
 		// momopate: fix moving the camera not affecting spread
-		float AVelocity = (g_fix_avelocity_spread) ? fCurAVelocity : state.fAVelocity;
+		float AVelocity = (g_fix_avelocity_spread) ? (fCurAVelocity * _lerp(2.0f, 0.1f, GetWeaponParam(W, GetInertionAimFactor(), 1.0f))) : state.fAVelocity;
 
 		//fAVelocity = angle velocity
 		dispersion *= (1.0f + (AVelocity / VEL_A_MAX) * m_fDispVelFactor * GetWeaponParam(

@@ -4,6 +4,7 @@
 #include "inventory.h"
 #include "weapon.h"
 #include "level.h"
+#include "HUDCrosshair.h"
 
 float const CFireDispertionController::default_inertion = 5.91f; //time to pass value of dispertion = 1
 
@@ -43,6 +44,7 @@ void CFireDispertionController::Update()
 			tmp_inertion = tmp_weapon->GetCrosshairInertion();
 		}
 	}
+	/*
 	float diff_time = tmp_inertion * _abs(end_disp - start_disp);
 	float end_time = start_time + diff_time;
 	float current_time = Device.fTimeGlobal;
@@ -59,4 +61,18 @@ void CFireDispertionController::Update()
 	current_disp = start_disp + ((end_disp - start_disp) *
 		((current_time - start_time) / (end_time - start_time))
 	);
+	*/
+
+	float sp = tmp_inertion;
+	float radius_change = sp * Device.fTimeDelta;
+	clamp(radius_change, 0.0f, sp * 0.0069444f); // clamp to 30 fps
+	clamp(radius_change, 0.0f, _abs(end_disp - current_disp));
+
+	if (end_disp < current_disp)
+		current_disp -= radius_change;
+	else
+		current_disp += radius_change;
+	
+	//if ((current_disp < end_disp && end_disp < start_disp) || (current_disp > end_disp && end_disp > start_disp) || (end_disp == start_disp))
+	//	current_disp = end_disp;
 }

@@ -161,7 +161,7 @@ void CHUDTarget::Render()
 	Fvector dir = Device.vCameraDirection;
 
 	// Render cursor
-	u32 C = C_DEFAULT;
+	u32 C = HUDCrosshair.GetCrossColorDefault();
 
 	Fvector p2;
 	p2.mad(p1, dir, PP.RQ.range);
@@ -193,7 +193,7 @@ void CHUDTarget::Render()
 
 				if (E && E->g_Alive() && E->cast_base_monster())
 				{
-					C = C_ON_ENEMY;
+					C = HUDCrosshair.GetCrossColorEnemy();
 				}
 				else if (E && E->g_Alive() && !E->cast_base_monster())
 				{
@@ -204,13 +204,13 @@ void CHUDTarget::Render()
 						switch (RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
 						{
 						case ALife::eRelationTypeEnemy:
-							C = C_ON_ENEMY;
+							C = HUDCrosshair.GetCrossColorEnemy();
 							break;
 						case ALife::eRelationTypeNeutral:
-							C = C_ON_NEUTRAL;
+							C = HUDCrosshair.GetCrossColorNeutral();
 							break;
 						case ALife::eRelationTypeFriend:
-							C = C_ON_FRIEND;
+							C = HUDCrosshair.GetCrossColorFriend();
 							break;
 						}
 
@@ -327,7 +327,9 @@ void CHUDTarget::Render()
 	else
 	{
 		//отрендерить прицел
-		HUDCrosshair.cross_color = (C == C_DEFAULT ? g_crosshair_color : C );
+		HUDCrosshair.SetCurrentColor(C);
+		HUDCrosshair.Update();
+		HUDCrosshair.FixAlpha();
 		HUDCrosshair.OnRender();
 	}
 }
